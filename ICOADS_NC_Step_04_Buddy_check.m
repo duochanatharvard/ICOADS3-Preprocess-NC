@@ -54,15 +54,9 @@ function ICOADS_NC_Step_04_Buddy_check(yr,mon)
     
     % *********************************************************************
     % File to be saved
-    % *********************************************************************
-    if yr <= 2014
-        ICOADS_version = '3.0.0';
-    else
-        ICOADS_version = '3.0.1';
-    end
-    
+    % *********************************************************************   
     clear('cmon');    cmon = '00';    cmon(end-size(num2str(mon),2)+1:end) = num2str(mon);
-    file_save_qc = [dir_save_qc,'ICOADS_R',ICOADS_version,'_',num2str(yr),'-',cmon,'_QCed.nc'];
+    file_save_qc = [dir_save_qc,'ICOADS_R',ICOADS_NC_version(yr),'_',num2str(yr),'-',cmon,'_QCed.nc'];
 
     % *********************************************************************
     % Read SST data to be quality controlled 

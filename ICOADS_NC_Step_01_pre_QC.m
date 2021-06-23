@@ -41,14 +41,9 @@ function ICOADS_NC_Step_01_pre_QC(yr,mon)
     dir_save  = ICOADS_NC_OI('pre_QC');
     dir_OI    = ICOADS_NC_OI('Mis');
     cmon = '00';  cmon(end-size(num2str(mon),2)+1:end) = num2str(mon);
-    if yr <= 2014
-        ICOADS_version = '3.0.0';
-    else
-        ICOADS_version = '3.0.1';
-    end
-    file_load_pqc = [dir_load,'ICOADS_R',ICOADS_version,'_',...
+    file_load_pqc = [dir_load,'ICOADS_R',ICOADS_NC_version(yr),'_',...
                                                num2str(yr),'-',cmon,'.nc'];
-    file_save_pqc = [dir_save,'ICOADS_R',ICOADS_version,'_',...
+    file_save_pqc = [dir_save,'ICOADS_R',ICOADS_NC_version(yr),'_',...
                                         num2str(yr),'-',cmon,'_preQC.nc'];
                                     
     % Process the data   --------------------------------------------------
