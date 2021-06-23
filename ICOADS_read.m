@@ -40,6 +40,11 @@ function P_out = ICOADS_read(yr,mon,var,ref)
     if isempty(ref),           ref = 'SST';    end
     if strcmp(ref,'-'),        ref = 'None';   end
     
+    if ~exist('var','var')
+        var = {'C0_LON','C0_LAT','C0_UTC','SI_Std','C1_DCK','C0_CTY_CRT',...
+               'C1_PT','C0_SST','C0_OI_CLIM','C98_UID'};
+    end
+    
     var_out  = var;  % name of variables in outputs
     var_look = var;  % name of variables when loading files (look up)
 
