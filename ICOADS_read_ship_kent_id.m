@@ -15,7 +15,7 @@
 
 function DATA = ICOADS_read_ship_kent_id(P)
 
-    if ~exist('var','var')
+    if ~isfield(P,'var')
         P.var = {'C0_LON','C0_LAT','C0_UTC','SI_Std','ID_Kent',...
                  'C1_PT','C0_SST','C0_OI_CLIM','C98_UID'};
     end

@@ -19,9 +19,9 @@
 
 function DATA = ICOADS_read_ship(P)
 
-    if ~exist('var','var')
+    if ~isfield(P,'var')
         P.var = {'C0_LON','C0_LAT','C0_UTC','SI_Std','C1_DCK','C0_CTY_CRT',...
-                 'C1_PT','C0_SST','C0_OI_CLIM','C98_UID','QC_FINAL_SST'};
+                 'C1_PT','C0_SST','C0_OI_CLIM','C98_UID','QC_FINAL_SST','C1_ND'};
     end
 
     DATA = ICOADS_read(P);
