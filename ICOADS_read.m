@@ -3,9 +3,16 @@
 % var: a string or a cell list of strings
 %       The function will omit 'CX_' when reading data
 % ref: 'SST' or 'NMAT' or 'None'(shortcut '-')  -->  default: 'SST'
-%
-% Last updata: 2021-06-24
 % 
+% The function does the following adjustments to variables:
+% 1. SST method 7 & 9 -> -1
+% 2. Generic ID -> '         '
+% 
+% The function also provides the following options
+% 1. Subset outputs according to UIDs     (P.select_UID = list_of_UIDs)
+% 2. Load clim of Diurnal SSTs from buoys (P.buoy_diurnal = 1)
+% 
+% Last updata: 2021-06-24
 % 
 % Useage need to further subset data, e.g., only using bucket measurements:
 % 
@@ -34,7 +41,6 @@
 % QC_FINAL_NMAT: QC of NMAT after using flags and buddy check and Kent13
 % ID_Kent:       ID of tracked ships from Carrela17
 
-
 function P_out = ICOADS_read(P)
 
     % Parse input ---------------------------------------------------------
@@ -45,6 +51,13 @@ function P_out = ICOADS_read(P)
     else
         var = {'C0_LON','C0_LAT','C0_UTC','SI_Std','C1_DCK','C0_CTY_CRT',...
                'C1_PT','C0_SST','C0_OI_CLIM','C98_UID'};  
+    end
+    if isfield(P,'buoy_diurnal')
+        if P.buoy_diurnal == 1 && ~isfield(P,'LCL_int')
+            var{end+1} = 'LCL_int';  flag_lcl = 0;
+        else
+            flag_lcl = 1;
+        end
     end
     if isfield(P,'ref'), ref = P.ref;  else, ref = 'SST'; end
     if strcmp(ref,'-'),        ref = 'None';   end
@@ -73,6 +86,7 @@ function P_out = ICOADS_read(P)
     end
     
     % Read data from target files -----------------------------------------
+    clear('P_out')
     if ~iscell(var)
         eval(['P_out.',var_out,' = ICOADS_NC_function_read(yr,mon,''',var_look,''');']);
     else
@@ -122,13 +136,39 @@ function P_out = ICOADS_read(P)
         end
     end
     
-    % Finally, if UID for subsetting specific data is assigned ------------
+    % If UID for subsetting specific data is assigned ---------------------
     if ~isempty(select_UID)
         var_list = fieldnames(P_out);
         [~,pst] = ismember(select_UID,P_out.C98_UID);
 
         for ct_var = 1:numel(var_list)
             eval(['P_out.',var_list{ct_var},' = P_out.',var_list{ct_var},'(pst,:);']);
+        end
+    end
+
+    % If we are to find the clim of dirunal cycle from buoy ---------------
+    if isfield(P,'buoy_diurnal')
+        if P.buoy_diurnal == 1
+            
+            dir_da = LME_OI('Mis');
+            load([dir_da,'Diurnal_Amplitude_buoy_SST_1990_2014_climatology.mat'],'Diurnal_clim_buoy_1990_2014');
+            load([dir_da,'Diurnal_Shape_buoy_SST.mat'],'Diurnal_Shape');
+            
+            DA_mgntd  = LME_function_grd2pnt(P_out.C0_LON,P_out.C0_LAT,...
+                ones(size(P_out.C0_LON))*P.mon,Diurnal_clim_buoy_1990_2014,5,5,1);
+            Y = fix((P_out.C0_LAT+90)/5)+1;  Y(Y>36)=36;
+            P_out.LCL_int(isnan(P_out.LCL_int)) = 1;
+            
+            DASHP_id = sub2ind(size(Diurnal_Shape), ...
+                       P_out.LCL_int, Y, ones(size(P_out.C0_LON))*P.mon);
+            DA_shape = Diurnal_Shape(DASHP_id);
+            
+            P_out.Buoy_Diurnal = DA_shape .* DA_mgntd;
+            P_out.Buoy_Diurnal(isnan(P_out.Buoy_Diurnal)) = 0;
+            
+            if flag_lcl == 0
+                P_out = rmfield(P_out,'LCL_int');
+            end   
         end
     end
 end
