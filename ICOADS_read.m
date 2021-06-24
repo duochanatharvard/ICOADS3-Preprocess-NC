@@ -37,11 +37,15 @@
 
 function P_out = ICOADS_read(P)
 
+    % Parse input ---------------------------------------------------------
     yr = P.yr;
     mon = P.mon;
-    if isfield(P,'var'), var = P.var;  else
+    if isfield(P,'var') 
+        var = P.var;  
+    else
         var = {'C0_LON','C0_LAT','C0_UTC','SI_Std','C1_DCK','C0_CTY_CRT',...
-               'C1_PT','C0_SST','C0_OI_CLIM','C98_UID'};  end
+               'C1_PT','C0_SST','C0_OI_CLIM','C98_UID'};  
+    end
     if isfield(P,'ref'), ref = P.ref;  else, ref = 'SST'; end
     if strcmp(ref,'-'),        ref = 'None';   end
     if isfield(P,'select_UID'), select_UID = P.select_UID;  else, select_UID = []; end
@@ -49,7 +53,7 @@ function P_out = ICOADS_read(P)
     var_out  = var;  % name of variables in outputs
     var_look = var;  % name of variables when loading files (look up)
 
-    % Longitude and Latitude are stored in lower case in NC files
+    % Longitude and Latitude are stored in lower case in NC files ---------
     if ~iscell(var_look)
         if ismember(var_look,{'LON','LAT'}),  var_look = lower(var_look);  end
         if ismember(var_look,{'C0_LON'}),     var_look = 'lon';  end
@@ -68,7 +72,7 @@ function P_out = ICOADS_read(P)
         end
     end
     
-    % Read data from target files
+    % Read data from target files -----------------------------------------
     if ~iscell(var)
         eval(['P_out.',var_out,' = ICOADS_NC_function_read(yr,mon,''',var_look,''');']);
     else
@@ -80,7 +84,7 @@ function P_out = ICOADS_read(P)
         end
     end
     
-    % Read quality control flags
+    % Read quality control flags ------------------------------------------
     if strcmp(ref,'SST')
         l_use = ICOADS_NC_function_read(yr,mon,'QC_FINAL_SST') == 1;
     elseif strcmp(ref,'NMAT')
@@ -89,17 +93,24 @@ function P_out = ICOADS_read(P)
         l_use = true(size(out));
     end
     
-    % Subset data for outputs
+    % Subset data for outputs ---------------------------------------------
     [P_out,~] = ICOADS_subset(P_out,l_use);
     var_list = fieldnames(P_out);
 
-    % remove generic IDs that are not useful for the analysis
+    % If measurement method is read, assign 7 and 9 to be unknown ---------
+    if isfield(P_out,'SI_Std')
+        P_out.SI_Std(P_out.SI_Std == 7 | P_out.SI_Std == 9) = -1;
+    end
+    if isfield(P_out,'SI_K12')
+        P_out.SI_K12(P_out.SI_K12 == 7 | P_out.SI_K12 == 9) = -1;
+    end
+    
+    % remove generic IDs that are not useful for any analyses -------------
     if any(ismember(var_list,{'C0_ID','ID'}))
         
         bad_ID_list = ['0120     ';'SHIP     ';'PLAT     '; 'RIGG     '; 
                        'MASKST   ';'1        ';'58       '; '7        ';
                        'MASKSTID '];
-
         try
             temp = P_out.C0_ID;
             l = ismember(temp,bad_ID_list,'rows');
@@ -111,7 +122,7 @@ function P_out = ICOADS_read(P)
         end
     end
     
-    % Finally, if UID for subsetting specific data is assigned
+    % Finally, if UID for subsetting specific data is assigned ------------
     if ~isempty(select_UID)
         var_list = fieldnames(P_out);
         [~,pst] = ismember(select_UID,P_out.C98_UID);
