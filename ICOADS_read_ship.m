@@ -1,5 +1,5 @@
 % DATA = ICOADS_read_ship(P)
-% 
+%
 % P.yr
 % P.mon
 % P.var: a string or a cell list of strings
@@ -8,12 +8,13 @@
 % P.do_connect      default: 1
 % P.connect_Kobe    default: 1
 % [Option] P.subset_method   subset only one type of SSTs
+% [Option] P.select_UID      subset by UIDs in the assigned order
 %
 % Description:
-% return only ship data (PT 0~5), and the metadata read for grouping is 
-% nation-deck-method, only SSTs that pass QC are read. The function 
+% return only ship data (PT 0~5), and the metadata read for grouping is
+% nation-deck-method, only SSTs that pass QC are read. The function
 % automatically combines deck.
-% 
+%
 % Last updata: 2021-06-23
 
 function DATA = ICOADS_read_ship(P)
@@ -23,7 +24,7 @@ function DATA = ICOADS_read_ship(P)
                  'C1_PT','C0_SST','C0_OI_CLIM','C98_UID','QC_FINAL_SST'};
     end
 
-    DATA = ICOADS_read(P.yr,P.mon,P.var,P.ref);
+    DATA = ICOADS_read(P);
 
     % Connect decks
     if ~isfield(P,'do_connect'),    P.do_connect = 1;   end
@@ -37,7 +38,5 @@ function DATA = ICOADS_read_ship(P)
         l_use = l_use & ismember(DATA.SI_Std,P.subset_method);
     end
     [DATA,~] = ICOADS_subset(DATA,l_use);
-    
+
 end
-    
-    

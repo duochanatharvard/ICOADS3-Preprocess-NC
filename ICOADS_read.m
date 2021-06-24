@@ -1,16 +1,17 @@
-% P_out = ICOADS_read(yr,mon,var,ref)
+% P_out = ICOADS_read(P)
 % 
 % var: a string or a cell list of strings
 %       The function will omit 'CX_' when reading data
 % ref: 'SST' or 'NMAT' or 'None'(shortcut '-')  -->  default: 'SST'
 %
-% Last updata: 2021-06-16
+% Last updata: 2021-06-24
 % 
 % 
 % Useage need to further subset data, e.g., only using bucket measurements:
 % 
-% var = {'C0_SST','C0_LON','C0_LAT','C0_YR','SI_Std'}; 
-% Data = ICOADS_read(1930,4,var,'SST');
+% P.var = {'C0_SST','C0_LON','C0_LAT','C0_YR','SI_Std'}; 
+% P.yr = 1930; P.mon = 1; P.ref = 'SST'; P.select_UID = [];
+% Data = ICOADS_read(P);
 % l_use = Data.SI_Std == 0;
 % [Data_use,var_list] = ICOADS_subset(Data,l_use);
 % 
@@ -34,16 +35,16 @@
 % ID_Kent:       ID of tracked ships from Carrela17
 
 
-function P_out = ICOADS_read(yr,mon,var,ref)
+function P_out = ICOADS_read(P)
 
-    if ~exist('ref','var'),    ref = 'SST';    end
-    if isempty(ref),           ref = 'SST';    end
-    if strcmp(ref,'-'),        ref = 'None';   end
-    
-    if ~exist('var','var')
+    yr = P.yr;
+    mon = P.mon;
+    if isfield(P,'var'), var = P.var;  else
         var = {'C0_LON','C0_LAT','C0_UTC','SI_Std','C1_DCK','C0_CTY_CRT',...
-               'C1_PT','C0_SST','C0_OI_CLIM','C98_UID'};
-    end
+               'C1_PT','C0_SST','C0_OI_CLIM','C98_UID'};  end
+    if isfield(P,'ref'), ref = P.ref;  else, ref = 'SST'; end
+    if strcmp(ref,'-'),        ref = 'None';   end
+    if isfield(P,'select_UID'), select_UID = P.select_UID;  else, select_UID = []; end
     
     var_out  = var;  % name of variables in outputs
     var_look = var;  % name of variables when loading files (look up)
@@ -107,6 +108,16 @@ function P_out = ICOADS_read(yr,mon,var,ref)
             temp = P_out.ID;
             l = ismember(temp,bad_ID_list,'rows');
             P_out.ID(l,:) = 32;
+        end
+    end
+    
+    % Finally, if UID for subsetting specific data is assigned
+    if ~isempty(select_UID)
+        var_list = fieldnames(P_out);
+        [~,pst] = ismember(select_UID,P_out.C98_UID);
+
+        for ct_var = 1:numel(var_list)
+            eval(['P_out.',var_list{ct_var},' = P_out.',var_list{ct_var},'(pst,:);']);
         end
     end
 end

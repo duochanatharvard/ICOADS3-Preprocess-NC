@@ -1,15 +1,16 @@
 % DATA = ICOADS_read_ship_kent_id(P)
-% 
+%
 % P.yr
 % P.mon
 % P.var: a string or a cell list of strings
 %        The function will omit 'CX_' when reading data
 % P.ref: 'SST' or 'NMAT' or 'None'(shortcut '-')  -->  default: 'SST'
+% [Option] P.select_UID      subset by UIDs in the assigned order
 %
 % Description:
-% return only ship data (PT 0~5), and the metadata read for grouping is 
-% tracked ships from Kent, only SSTs that pass QC and have valid ID are read. 
-% 
+% return only ship data (PT 0~5), and the metadata read for grouping is
+% tracked ships from Kent, only SSTs that pass QC and have valid ID are read.
+%
 % Last updata: 2021-06-23
 
 function DATA = ICOADS_read_ship_kent_id(P)
@@ -19,7 +20,7 @@ function DATA = ICOADS_read_ship_kent_id(P)
                  'C1_PT','C0_SST','C0_OI_CLIM','C98_UID'};
     end
 
-    DATA = ICOADS_read(P.yr,P.mon,P.var,P.ref);
+    DATA = ICOADS_read(P);
 
     % Remove buoy and CMAN measurements and only use ship measurements
     l_use = DATA.SI_Std ~= -2 & DATA.SI_Std ~= -3 & ...
@@ -32,7 +33,7 @@ function DATA = ICOADS_read_ship_kent_id(P)
     l_use   = l_use & ~l_empty & ~l_NA;
 
     [DATA,~] = ICOADS_subset(DATA,l_use);
-    
+
 end
 
 % For plotting individual ship tracks for debug
