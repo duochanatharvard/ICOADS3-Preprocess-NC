@@ -150,7 +150,7 @@ function P_out = ICOADS_read(P)
     if isfield(P,'buoy_diurnal')
         if P.buoy_diurnal == 1
             
-            dir_da = LME_OI('Mis');
+            dir_da = ICOADS_NC_OI('Mis');
             load([dir_da,'Diurnal_Amplitude_buoy_SST_1990_2014_climatology.mat'],'Diurnal_clim_buoy_1990_2014');
             load([dir_da,'Diurnal_Shape_buoy_SST.mat'],'Diurnal_Shape');
             
