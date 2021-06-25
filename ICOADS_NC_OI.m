@@ -6,7 +6,8 @@ function output = ICOADS_NC_OI(input)
 
     if strcmp(input,'home')
         % Set the home directory, should be where the data are saved
-        output = ['/n/home10/dchan/kuang_dss/ICOADS3_NC/'];
+        output = ['/n/home10/dchan/holy_peter/ICOADS3_NC/'];
+        % output = ['/Users/duochan/Data/ICOADS3_NC/'];
 
     elseif  strcmp(input,'nc_files')
         output = [ICOADS_NC_OI('home'),'ICOADS_01_nc_files/'];
