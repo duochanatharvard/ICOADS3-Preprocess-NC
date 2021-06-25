@@ -32,8 +32,12 @@ function DATA = ICOADS_read_ship(P)
     DATA.DCK = LME_function_preprocess_deck([DATA.C0_CTY_CRT DATA.C1_DCK],P);
 
     % Remove buoy and CMAN measurements and only use ship measurements
-    l_use = DATA.SI_Std ~= -2 & DATA.SI_Std ~= -3; % & ...
-    %       (DATA.C1_PT >=0 & DATA.C1_PT <=5);
+    % Subset using PT1--5 and missing PT
+    % However, as long as the SST method belongs to 0--6, we use the record
+    l_use = DATA.SI_Std ~= -2 & DATA.SI_Std ~= -3 & ...
+           (DATA.C1_PT >=0 & DATA.C1_PT <=5 | isnan(DATA.C1_PT));
+    l_ship = ismember(DATA.SI_Std,[0,1,2,3,4,5,6]);
+    l_use = l_use | l_ship;
     if isfield(P,'subset_method')
         l_use = l_use & ismember(DATA.SI_Std,P.subset_method);
     end
