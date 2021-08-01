@@ -67,9 +67,11 @@ function ICOADS_NC_Step_01_pre_QC(yr,mon)
     try C1  = ncread(file_load_pqc,'C1')';  catch  C1  = char(ones(N_meas,2)*32); end
     try 
         C2  = ncread(file_load_pqc,'C2');  
-        C2 = num2str(C2);  
-        if size(C2,2) == 3,    C2 = C2(:,2:3);    end
-        C2(ismember(C2,'aN','rows'),:) = ' ';
+        if size(C2,1) == 1
+            C2 = num2str(C2);  
+            if size(C2,2) == 3,    C2 = C2(:,2:3);    end
+            C2(ismember(C2,'aN','rows'),:) = ' ';
+        end
     catch
         C2  = char(ones(size(C1))*32);
     end
