@@ -12,8 +12,10 @@
 function ICOADS_NC_Step_00_IMMA2NC(yr,mon)
 
     % Set direcotry and files  --------------------------------------------
-    dir_load  = '/n/home10/dchan/holy_peter/ICOADS3.1/ICOADS_00_IMMA/';
-    dir_save  = '/n/home10/dchan/holy_peter/ICOADS3.1/ICOADS_01_nc_files/';
+    dir = '/n/home10/dchan/holy_peter/ICOADS3.1/';
+    % dir = '/Users/duochan/Data/ICOADS3.1/';
+    dir_load  = [dir,'ICOADS_00_IMMA/'];
+    dir_save  = [dir,'ICOADS_01_nc_files/'];
     cmon      = '00';  cmon(end-size(num2str(mon),2)+1:end) = num2str(mon);
     file_load = [dir_load,'IMMA1_R3.1.0_',num2str(yr),'-',cmon];
     file_save_pqc = [dir_save,'ICOADS_R3.1.0_',num2str(yr),'-',cmon,'.nc'];
@@ -305,107 +307,132 @@ function ICOADS_NC_Step_00_IMMA2NC(yr,mon)
         else
             date = [num2str(C0_YR) repmat('0',numel(C0_MO),1) num2str(C0_MO) num2str(C0_DY)];
         end
-        ICOADS_NC_function_ncsave(file_save_pqc,'date',date,'char');
-        ICOADS_NC_function_ncsave(file_save_pqc,'HR',C0_HR,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'lon',C0_LON,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'lat',C0_LAT,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'TI',C0_TI,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'LI',C0_LI,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'DS',C0_DS,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'VS',C0_VS,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'NID',C0_NID,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'II',C0_II,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'ID',C0_ID,'char');
-        ICOADS_NC_function_ncsave(file_save_pqc,'C1',C0_C1,'char');
-        ICOADS_NC_function_ncsave(file_save_pqc,'DI',C0_DI,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'D',C0_D,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'WI',C0_WI,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'W',C0_W,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'VI',C0_VI,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'VV',C0_VV,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'WW',C0_WW,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'W1',C0_W1,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'SLP',C0_SLP,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'IT',C0_IT,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'AT',C0_AT,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'WBTI',C0_WBTI,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'WBT',C0_WBT,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'DPTI',C0_DPTI,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'DPT',C0_DPT,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'SI',C0_SI,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'SST',C0_SST,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'N',C0_N,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'NH',C0_NH,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'CL',C0_CL,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'CM',C0_CM,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'CH',C0_CH,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'WD',C0_WD,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'WP',C0_WP,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'WH',C0_WH,'int16');
+        date(date==' ') = '0';
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'date',date','char');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'HR',C0_HR,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'lon',C0_LON,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'lat',C0_LAT,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'TI',C0_TI,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'LI',C0_LI,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'DS',C0_DS,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'VS',C0_VS,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'NID',C0_NID,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'II',C0_II,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'ID',C0_ID','char');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'C1',C0_C1','char');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'DI',C0_DI,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'D',C0_D,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'WI',C0_WI,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'W',C0_W,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'VI',C0_VI,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'VV',C0_VV,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'WW',C0_WW,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'W1',C0_W1,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'SLP',C0_SLP,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'IT',C0_IT,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'AT',C0_AT,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'WBTI',C0_WBTI,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'WBT',C0_WBT,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'DPTI',C0_DPTI,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'DPT',C0_DPT,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'SI',C0_SI,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'SST',C0_SST,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'N',C0_N,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'NH',C0_NH,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'CL',C0_CL,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'CM',C0_CM,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'CH',C0_CH,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'WD',C0_WD,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'WP',C0_WP,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'WH',C0_WH,'int16');
         
-        ICOADS_NC_function_ncsave(file_save_pqc,'DCK',C1_DCK,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'SID',C1_SID,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'PT',C1_PT,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'DUPS',C1_DUPS,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'DIPC',C1_DUPC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'PB',C1_PB,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'WX',C1_WX,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'C2',C1_C2,'char');
-        ICOADS_NC_function_ncsave(file_save_pqc,'ND',C1_ND,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'SF',C1_SF,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'AF',C1_AF,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'UF',C1_UF,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'VF',C1_VF,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'PF',C1_PF,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'RF',C1_RF,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'ZNC',C1_ZNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'WNC',C1_WNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'BNC',C1_BNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'XNC',C1_XNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'YNC',C1_YNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'PNC',C1_PNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'ANC',C1_ANC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'GNC',C1_GNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'DNC',C1_DNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'SNC',C1_SNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'CNC',C1_CNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'ENC',C1_ENC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'FNC',C1_FNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'TNC',C1_TNC,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'LZ',C1_LZ,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'DCK',C1_DCK,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'SID',C1_SID,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'PT',C1_PT,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'DUPS',C1_DUPS,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'DIPC',C1_DUPC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'PB',C1_PB,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'WX',C1_WX,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'C2',C1_C2,'char');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'ND',C1_ND,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'SF',C1_SF,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'AF',C1_AF,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'UF',C1_UF,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'VF',C1_VF,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'PF',C1_PF,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'RF',C1_RF,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'ZNC',C1_ZNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'WNC',C1_WNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'BNC',C1_BNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'XNC',C1_XNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'YNC',C1_YNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'PNC',C1_PNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'ANC',C1_ANC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'GNC',C1_GNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'DNC',C1_DNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'SNC',C1_SNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'CNC',C1_CNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'ENC',C1_ENC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'FNC',C1_FNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'TNC',C1_TNC,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'LZ',C1_LZ,'int16');
         
-        ICOADS_NC_function_ncsave(file_save_pqc,'C1M',C7_C1M,'char');
-        ICOADS_NC_function_ncsave(file_save_pqc,'OPM',C7_OPM,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'KOV',C7_KOV,'char');
-        ICOADS_NC_function_ncsave(file_save_pqc,'TOT',C7_TOT,'char');
-        ICOADS_NC_function_ncsave(file_save_pqc,'EOT',C7_EOT,'char');
-        ICOADS_NC_function_ncsave(file_save_pqc,'SIM',C7_SIM,'char');
-        ICOADS_NC_function_ncsave(file_save_pqc,'LOV',C7_LOV,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'DOS',C7_DOS,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'HOP',C7_HOP,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'HOT',C7_HOT,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'HOB',C7_HOB,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'HOA',C7_HOA,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'C1M',C7_C1M','char');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'OPM',C7_OPM,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'KOV',C7_KOV','char');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'TOT',C7_TOT','char');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'EOT',C7_EOT','char');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'SIM',C7_SIM','char');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'LOV',C7_LOV,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'DOS',C7_DOS,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'HOP',C7_HOP,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'HOT',C7_HOT,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'HOB',C7_HOB,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'HOA',C7_HOA,'int16');
         
-        ICOADS_NC_function_ncsave(file_save_pqc,'OTV',C8_OTV,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'OTZ',C8_OTZ,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'OSV',C8_OSV,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'OSZ',C8_OSZ,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'OOV',C8_OOV,'single');
-        ICOADS_NC_function_ncsave(file_save_pqc,'OOZ',C8_OOZ,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'OTV',C8_OTV,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'OTZ',C8_OTZ,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'OSV',C8_OSV,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'OSZ',C8_OSZ,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'OOV',C8_OOV,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'OOZ',C8_OOZ,'single');
 
-        ICOADS_NC_function_ncsave(file_save_pqc,'NE',C9_Ne,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'NHE',C9_NHe,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'AM',C9_AM,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'AH',C9_AH,'int16');
-        ICOADS_NC_function_ncsave(file_save_pqc,'RI',C9_RI,'single');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'NE',C9_Ne,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'NHE',C9_NHe,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'AM',C9_AM,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'AH',C9_AH,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'RI',C9_RI,'single');
         
-        ICOADS_NC_function_ncsave(file_save_pqc,'UID',C98_UID,'char');
-        ICOADS_NC_function_ncsave(file_save_pqc,'IRF',C98_IRF,'int16');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'UID',C98_UID','char');
+        ICOADS_NC_function_ncsave_0(file_save_pqc,'IRF',C98_IRF,'int16');
              
     else
         disp([file_load ,' does not exist!']);
     end
-    disp([file_save ,' is finished!']);
+    disp(['Processing ',file_save_pqc ,' completes!']);
     disp([' ']);
+end
+
+
+function ICOADS_NC_function_ncsave_0(file_save,var_name,data,type)
+
+    N_meas = max(size(data));
+    
+    if ~exist('type','var'),   type = 'double';    end
+    if isempty(type),          type = 'double';    end
+    if ismember(type,{'single','double'}), FillValue = -9999; end
+    if strcmp(type,'int16'), FillValue = -99; end
+    
+    if size(data,2) == 1
+        nccreate(file_save,var_name,'Dimensions', {'obs',N_meas},...
+             'Datatype',type,'FillValue',FillValue,'Format','netcdf4');
+    elseif size(data,1) == N_meas
+        nccreate(file_save,var_name,'Dimensions', {'obs',N_meas,[var_name,'_len'],size(data,2)},...
+             'Datatype',type,'FillValue','disable','Format','netcdf4');        
+    else
+        nccreate(file_save,var_name,'Dimensions', {[var_name,'_len'],size(data,1),'obs',N_meas},...
+             'Datatype',type,'FillValue','disable','Format','netcdf4');
+    end
+    ncwrite(file_save,var_name,data);
+
 end
