@@ -12,13 +12,18 @@
 function ICOADS_NC_Step_00_IMMA2NC(yr,mon)
 
     % Set direcotry and files  --------------------------------------------
-    dir = '/n/home10/dchan/holy_peter/ICOADS3.1/';
+    dir = '/n/home10/dchan/holy_peter/ICOADS3_total/';
     % dir = '/Users/duochan/Data/ICOADS3.1/';
     dir_load  = [dir,'ICOADS_00_IMMA/'];
     dir_save  = [dir,'ICOADS_01_nc_files/'];
     cmon      = '00';  cmon(end-size(num2str(mon),2)+1:end) = num2str(mon);
-    file_load = [dir_load,'IMMA1_R3.1.0_',num2str(yr),'-',cmon];
-    file_save_pqc = [dir_save,'ICOADS_R3.1.0_',num2str(yr),'-',cmon,'.nc'];
+    if yr <= 2014
+        file_load = [dir_load,'IMMA1_R3.0.0T_',num2str(yr),'-',cmon];
+        file_save_pqc = [dir_save,'ICOADS_R3.0.0T_',num2str(yr),'-',cmon,'.nc'];
+    else
+        file_load = [dir_load,'IMMA1_R3.0.1T_',num2str(yr),'-',cmon];
+        file_save_pqc = [dir_save,'ICOADS_R3.0.1T_',num2str(yr),'-',cmon,'.nc'];
+    end
 
     % Convert the files  --------------------------------------------------
     fid=fopen(file_load,'r');
