@@ -7,11 +7,7 @@ function out = ICOADS_NC_function_read(yr,mon,var)
 
 
     cmon = '00';  cmon(end-size(num2str(mon),2)+1:end) = num2str(mon);
-    if yr <= 2014
-        ICOADS_version = '3.0.0';
-    else
-        ICOADS_version = '3.0.1';
-    end
+    ICOADS_version = ICOADS_NC_version(yr);
     
     file1 = [dir1,'ICOADS_R',ICOADS_version,'_',...
                                                num2str(yr),'-',cmon,'.nc'];

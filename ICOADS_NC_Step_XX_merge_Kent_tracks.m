@@ -107,12 +107,7 @@ function ICOADS_NC_Step_XX_merge_Kent_tracks(yr,mon)
     % Save files
     % *************************************************************************
     disp('Saving Data ...')
-
-    if yr <= 2014
-        ICOADS_version = '3.0.0';
-    else
-        ICOADS_version = '3.0.1';
-    end
+    ICOADS_version = ICOADS_NC_version(yr);
     cmon = '00';  cmon(end-size(num2str(mon),2)+1:end) = num2str(mon);
     dir_save = ICOADS_NC_OI('Kent_save');
     file_save = [dir_save,'ICOADS_R',ICOADS_version,'_',num2str(yr),'-',cmon,'_Tracks_Kent.nc'];

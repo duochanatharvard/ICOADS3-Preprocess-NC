@@ -1,4 +1,5 @@
 % sbatch --account=huybers_lab  -J ICOADS_nc_preprocess  -t 10080 -p huce_intel,huce_cascade -n 1  --mem-per-cpu=55000  --array=1-360  -o err --wrap='matlab -nosplash -nodesktop -nodisplay -r "num=$SLURM_ARRAY_TASK_ID; [yr_id,mon] = ind2sub([30,12],num); for yr = (1849+yr_id):30:2014,  ICOADS_NC_Step_00_IMMA2NC(yr,mon); end;quit;">>log'
+% sbatch --account=huybers_lab  -J ICOADS_nc_preprocess  -t 10080 -p huce_intel,huce_cascade -n 1  --mem-per-cpu=55000  --array=[list]  -o err --wrap='matlab -nosplash -nodesktop -nodisplay -r "num=$SLURM_ARRAY_TASK_ID; [mon,yr_id] = ind2sub([12,165],num); yr = 1849+yr_id;  ICOADS_NC_Step_00_IMMA2NC(yr,mon);  quit;">>log'
 % 
 % ICOADS_NC_Step_00_IMMA2NC(yr,mon)
 %
@@ -17,13 +18,9 @@ function ICOADS_NC_Step_00_IMMA2NC(yr,mon)
     dir_load  = [dir,'ICOADS_00_IMMA/'];
     dir_save  = [dir,'ICOADS_01_nc_files/'];
     cmon      = '00';  cmon(end-size(num2str(mon),2)+1:end) = num2str(mon);
-    if yr <= 2014
-        file_load = [dir_load,'IMMA1_R3.0.0T_',num2str(yr),'-',cmon];
-        file_save_pqc = [dir_save,'ICOADS_R3.0.0T_',num2str(yr),'-',cmon,'.nc'];
-    else
-        file_load = [dir_load,'IMMA1_R3.0.1T_',num2str(yr),'-',cmon];
-        file_save_pqc = [dir_save,'ICOADS_R3.0.1T_',num2str(yr),'-',cmon,'.nc'];
-    end
+    ICOADS_version = ICOADS_NC_version(yr);
+    file_load      = [dir_load,'IMMA1_R',ICOADS_version,'T_',num2str(yr),'-',cmon];
+    file_save_pqc  = [dir_save,'ICOADS_R',ICOADS_version,'T_',num2str(yr),'-',cmon,'.nc'];
 
     % Convert the files  --------------------------------------------------
     fid=fopen(file_load,'r');
