@@ -42,5 +42,10 @@ function DATA = ICOADS_read_ship(P)
         l_use = l_use & ismember(DATA.SI_Std,P.subset_method);
     end
     [DATA,~] = ICOADS_subset(DATA,l_use);
-
+    
+    % Combine 797/798 ships into 792 :: 20221120
+    l_chg  = DATA.DCK(:,3) == 797 | DATA.DCK(:,3) == 798;
+    l3_chg = (DATA.DCK(:,3) == 797 | DATA.DCK(:,3) == 798) & DATA.DCK(:,1) > 100;
+    DATA.DCK(l_chg,3)  = 792;
+    DATA.DCK(l3_chg,:) = 792;
 end
